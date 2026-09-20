@@ -334,17 +334,13 @@ def average_profit(data):
             lose = 0
     number_win = Counter(li)
     number_lose = Counter(li_2)
-    ss = pd.DataFrame()
-    for x in dic:
-        df = pd.DataFrame([x])
-        ss = pd.concat([ss, df.T])
+    win_frames = [pd.DataFrame([x]).T for x in dic]
+    ss = pd.concat(win_frames) if len(win_frames) > 0 else pd.DataFrame()
     win_ss = ss.reset_index()
     win_ss = win_ss.groupby('index').mean()
 
-    ss2 = pd.DataFrame()
-    for y in dicc:
-        df = pd.DataFrame([y])
-        ss2 = pd.concat([ss2, df.T])
+    lose_frames = [pd.DataFrame([y]).T for y in dicc]
+    ss2 = pd.concat(lose_frames) if len(lose_frames) > 0 else pd.DataFrame()
     lose_ss = ss2.reset_index()
     lose_ss = lose_ss.groupby('index').mean()
     result = {'连续盈利次数': number_win,
@@ -1758,7 +1754,7 @@ class WtBtAnalyst:
                 }
                 closes_all.append(litem)
             df_closes['time'] = df_closes['closetime'].apply(lambda x: datetime.strptime(str(x), '%Y%m%d%H%M'))
-            df_c_m = df_closes.resample(rule='M', on='time', label='right',
+            df_c_m = df_closes.resample(rule='ME', on='time', label='right',
                                                                     closed='right').agg({
                 'profit': 'sum',
                 'maxprofit': 'sum',
@@ -1780,7 +1776,7 @@ class WtBtAnalyst:
                 }
                 closes_month.append(litem)
 
-            df_c_y = df_closes.resample(rule='Y', on='time', label='right',
+            df_c_y = df_closes.resample(rule='YE', on='time', label='right',
                                         closed='right').agg({
                 'profit': 'sum',
                 'maxprofit': 'sum',

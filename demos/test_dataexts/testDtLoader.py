@@ -32,7 +32,7 @@ class MyDataLoader(BaseExtDataLoader):
             ' <Close>':'close',
             ' <Volume>':'vol',
             })
-        df['date'] = df['date'].astype('datetime64').dt.strftime('%Y%m%d').astype('int64')
+        df['date'] = df['date'].astype('datetime64[ns]').dt.strftime('%Y%m%d').astype('int64')
         df['time'] = (df['date']-19900000)*10000 + df['time'].str.replace(':', '').str[:-2].astype('int')
 
         BUFFER = WTSBarStruct*len(df)

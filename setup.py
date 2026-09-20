@@ -23,7 +23,7 @@ VERSION = '0.9.9.3'
 # What packages are required for this module to be executed?
 REQUIRED = [
     'numpy', 
-    'pandas==1.3.5',     
+    'pandas>=2.2.3',     
     'chardet',
     'pyyaml',
     'xlsxwriter', 
@@ -31,6 +31,8 @@ REQUIRED = [
     'psutil', 
     'fastapi',
     'uvicorn',
+    'itsdangerous',
+    'pytz',
     'deap',
     'websockets>=10.4'
 ]

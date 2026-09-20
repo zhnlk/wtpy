@@ -606,8 +606,9 @@ def read_closes(file):
     data = [line.strip('\n').split(',') for line in data]
 
     df = pd.DataFrame(data, columns=header)
-    df.iloc[:, [2, 4, 6, 7, 8, 9, 13, 14]] = df.iloc[:, [2, 4, 6, 7, 8, 9, 13, 14]].astype(np.int64)
-    df.iloc[:, [3, 5, 10]] = df.iloc[:, [3, 5, 10]].astype(np.float64)
+    astype_map = {df.columns[i]: np.int64 for i in [2, 4, 6, 7, 8, 9, 13, 14]}
+    astype_map.update({df.columns[i]: np.float64 for i in [3, 5, 10]})
+    df = df.astype(astype_map)
     return df
 
 
@@ -620,6 +621,7 @@ def read_funds(file):
     data = [line.strip('\n').split(',') for line in data]
 
     df = pd.DataFrame(data, columns=header)
-    df.iloc[:, 0] = df.iloc[:, 0].astype(np.int64)
-    df.iloc[:, 1:] = df.iloc[:, 1:].astype(np.float64)
+    astype_map = {df.columns[0]: np.int64}
+    astype_map.update({col: np.float64 for col in df.columns[1:]})
+    df = df.astype(astype_map)
     return df
